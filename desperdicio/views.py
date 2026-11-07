@@ -1,14 +1,29 @@
 """Camada de apresentação: toda tela exige login (RNF01/RNF02)."""
+import logging
 from datetime import date
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import DatabaseError, connection
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from . import services
 from .forms import CompraForm, IngredienteForm, ItensFormSet, LancamentoForm, PerdaForm, ReceitaForm
 from .models import Lancamento, Receita
+
+logger = logging.getLogger(__name__)
+
+
+def health_check(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+    except DatabaseError:
+        logger.exception("Falha na checagem de saúde do banco de dados.")
+        return HttpResponse("unavailable", status=503)
+    return HttpResponse("ok")
 
 
 def _brl(valor):

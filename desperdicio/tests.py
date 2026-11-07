@@ -77,6 +77,18 @@ class Seguranca(TestCase):
             self.assertEqual(resp.status_code, 302, nome)
             self.assertIn(reverse("login"), resp["Location"], nome)
 
+    def test_health_check_publica_confirma_aplicacao_e_banco(self):
+        resp = self.client.get(reverse("health_check"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.content, b"ok")
+
+    def test_menu_exibe_controles_acessiveis_de_tamanho_do_texto(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("menu"))
+        self.assertContains(resp, 'aria-label="Aumentar tamanho do texto"')
+        self.assertContains(resp, 'aria-live="polite"')
+        self.assertContains(resp, "data-ajuste-fonte")
+
     def test_login_valido_e_invalido(self):  # RNF01
         ruim = self.client.post(reverse("login"), {"username": "carina_teste", "password": "errada"})
         self.assertContains(ruim, "Usuário ou senha incorretos")
