@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from . import services
 from .forms import CompraForm, IngredienteForm, ItensFormSet, LancamentoForm, PerdaForm, ReceitaForm
-from .models import Receita
+from .models import Lancamento, Receita
 
 
 def _brl(valor):
@@ -93,7 +93,6 @@ def caixa(request):
         form.save()
         messages.success(request, "Lançamento registrado.")
         return redirect("caixa")
-    from .models import Lancamento
     contexto = {"form": form, "caixa": services.saldo_caixa(ano, mes), "mes": f"{ano}-{mes:02d}",
                 "lancamentos": Lancamento.objects.filter(data__year=ano, data__month=mes)[:10]}
     return render(request, "desperdicio/caixa.html", contexto)
