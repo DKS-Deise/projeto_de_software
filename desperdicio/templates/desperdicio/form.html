@@ -1,0 +1,28 @@
+{% extends "desperdicio/base.html" %}
+{% block titulo %}{{ titulo }}{% endblock %}
+{% block conteudo %}
+<a class="btn btn-neutro mb-3" href="{% url 'menu' %}"><span aria-hidden="true">←</span> Voltar</a>
+<h2 class="h4">{{ titulo }}</h2>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for campo in form %}
+    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+    {{ campo }}{{ campo.errors }}
+  {% endfor %}
+  {% if formset %}
+    <h3 class="h5 mt-4">Ingredientes da receita</h3>
+    {{ formset.management_form }}{{ formset.non_form_errors }}
+    {% for f in formset %}
+      <div class="cartao">
+        {% for campo in f.visible_fields %}
+          <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>{{ campo }}{{ campo.errors }}
+        {% endfor %}{% for h in f.hidden_fields %}{{ h }}{% endfor %}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <button type="submit" class="btn btn-principal mt-4" style="min-height:56px;font-size:1.0625rem">Salvar</button>
+</form>
+{% if ver_resumo %}<a class="btn btn-contorno mt-3" href="{% url 'resumo' %}">Ver resumo do mês</a>{% endif %}
+{% if link_ingrediente %}<a class="btn btn-neutro mt-3" href="{% url 'ingrediente_novo' %}">Cadastrar novo ingrediente</a>{% endif %}
+{% endblock %}

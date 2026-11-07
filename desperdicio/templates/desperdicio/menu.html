@@ -1,0 +1,13 @@
+{% extends "desperdicio/base.html" %}
+{% block conteudo %}
+<h2 class="h4">Olá, {{ request.user.first_name|default:request.user.username }}</h2>
+<div class="d-grid gap-2 mt-3">
+  <a class="btn btn-principal" href="{% url 'perda_nova' %}"><span aria-hidden="true">⚠</span> Registrar perda</a>
+  <a class="btn btn-contorno" href="{% url 'compra_nova' %}"><span aria-hidden="true">🛒</span> Registrar compra</a>
+  <a class="btn btn-contorno" href="{% url 'receitas' %}"><span aria-hidden="true">📋</span> Receitas</a>
+  <a class="btn btn-contorno" href="{% url 'resumo' %}"><span aria-hidden="true">📊</span> Resumo do mês</a>
+  <a class="btn btn-neutro" href="{% url 'caixa' %}"><span aria-hidden="true">💰</span> Caixa</a>
+  <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+    <button class="btn btn-neutro" type="submit"><span aria-hidden="true">🚪</span> Sair</button></form>
+</div>
+{% endblock %}

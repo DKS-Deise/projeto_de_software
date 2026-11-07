@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Controle de desperdício – protótipo</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f3f6;--card:#fff;--ink:#1d2330;--muted:#4b5363;--line:#9aa3b2;--brand:#a61e3a;--onbrand:#fff;--ok:#0d6b3d;--okbg:#e3f4ea;--err:#a4161a;--errbg:#fde8e8;--soft:#fbe9ed;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141821;--card:#1e2430;--ink:#f1f3f7;--muted:#c3c9d6;--line:#7b8598;--brand:#ff8fa6;--onbrand:#2a0a12;--ok:#7ee0a8;--okbg:#123626;--err:#ffb3b5;--errbg:#3d1618;--soft:#3a1a22}}
+:root[data-theme="dark"]{--bg:#141821;--card:#1e2430;--ink:#f1f3f7;--muted:#c3c9d6;--line:#7b8598;--brand:#ff8fa6;--onbrand:#2a0a12;--ok:#7ee0a8;--okbg:#123626;--err:#ffb3b5;--errbg:#3d1618;--soft:#3a1a22}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.45 "Atkinson Hyperlegible",system-ui,sans-serif}
+.app{max-width:430px;margin:0 auto;min-height:100vh;padding:20px 16px 32px}
+.view{display:none}.view.on{display:block}
+h1{font-size:1.6rem;line-height:1.2;margin:0 0 4px}
+h2{font-size:1.35rem;margin:0 0 12px}
+.sub{color:var(--muted);margin:0 0 20px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.logo{width:48px;height:48px;border-radius:14px;background:var(--brand);color:var(--onbrand);display:grid;place-items:center;font-size:1.5rem}
+label{display:block;font-weight:700;margin:16px 0 6px}
+input,select{width:100%;min-height:52px;padding:10px 14px;font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;padding:12px 16px;font:700 1.0625rem "Atkinson Hyperlegible",system-ui,sans-serif;border-radius:14px;border:2px solid var(--brand);background:var(--card);color:var(--brand);text-decoration:none;cursor:pointer;margin-top:10px}
+.btn.main{background:var(--brand);color:var(--onbrand);min-height:72px;font-size:1.25rem}
+.btn.quiet{border-color:var(--line);color:var(--ink)}
+.btn.saveb{min-height:56px;background:var(--brand);color:var(--onbrand)}
+.msg{display:none;margin-top:14px;padding:12px 14px;border-radius:12px;font-weight:700}
+.msg.on{display:flex;gap:10px}
+.msg.err{background:var(--errbg);color:var(--err);border:2px solid var(--err)}
+.msg.ok{background:var(--okbg);color:var(--ok);border:2px solid var(--ok)}
+.hint{color:var(--muted);font-size:.95rem;margin-top:6px}
+.menu{display:grid;gap:10px;margin-top:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px}
+.card b{display:block;font-size:1.6rem;line-height:1.2}
+.card span{color:var(--muted);font-size:.95rem}
+.card.wide{grid-column:1/-1;background:var(--soft);border-color:var(--brand)}
+.delta{font-weight:700;color:var(--ok)}
+ul.list{list-style:none;margin:0;padding:0}
+ul.list li{padding:12px 0;border-top:2px solid var(--line)}
+.row{display:flex;justify-content:space-between;gap:10px}
+.proto{margin-top:24px;font-size:.85rem;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="app">
+
+<section class="view" id="v-login">
+  <div class="top"><div class="logo" aria-hidden="true">🍰</div><div><h1>Controle de desperdício</h1><p class="sub" style="margin:0">Delícias da Lu</p></div></div>
+  <label for="u">Usuário</label>
+  <input id="u" value="carina_demo" autocomplete="off">
+  <label for="p">Senha</label>
+  <input id="p" type="password" value="demonstracao">
+  <a class="btn main" href="#menu">Entrar</a>
+  <div class="msg err on" role="alert" style="display:none"></div>
+  <p class="hint">Protótipo com dados fictícios. A senha real nunca aparece nas telas.</p>
+</section>
+
+<section class="view" id="v-menu">
+  <div class="top"><div class="logo" aria-hidden="true">🍰</div><div><h1>Controle de desperdício</h1><p class="sub" style="margin:0">Delícias da Lu</p></div></div>
+  <h2>Olá, Carina</h2>
+  <div class="menu">
+    <a class="btn main" href="#perda"><span aria-hidden="true">⚠</span> Registrar perda</a>
+    <a class="btn" href="#menu"><span aria-hidden="true">🛒</span> Registrar compra</a>
+    <a class="btn" href="#menu"><span aria-hidden="true">📋</span> Receitas</a>
+    <a class="btn" href="#resumo"><span aria-hidden="true">📊</span> Resumo do mês</a>
+    <a class="btn quiet" href="#menu"><span aria-hidden="true">💰</span> Caixa</a>
+    <a class="btn quiet" href="#login"><span aria-hidden="true">🚪</span> Sair</a>
+  </div>
+</section>
+
+<section class="view" id="v-perda">
+  <a class="btn quiet" href="#menu" style="margin:0 0 16px"><span aria-hidden="true">←</span> Voltar</a>
+  <h2>Registrar perda</h2>
+  <label for="ing">Ingrediente</label>
+  <select id="ing"><option value="10">Morango</option><option value="5">Açúcar</option><option value="8">Leite condensado</option></select>
+  <label for="qtd">Quantidade perdida (kg)</label>
+  <input id="qtd" inputmode="decimal" value="0,5" aria-describedby="erro">
+  <div class="msg err" id="erro" role="alert"><span aria-hidden="true">⚠</span><span>Informe a quantidade perdida, maior que zero.</span></div>
+  <label for="mot">Motivo</label>
+  <select id="mot"><option>Preparo que não deu certo</option><option>Validade vencida</option><option>Acidente</option><option>Outro</option></select>
+  <label for="dat">Data</label>
+  <input id="dat" value="06/11/2026">
+  <label for="obs">Observação (opcional)</label>
+  <input id="obs" maxlength="200" value="Calda fora do ponto">
+  <button class="btn saveb" id="salvar" type="button">Salvar</button>
+  <div class="msg ok" id="ok" role="status"><span aria-hidden="true">✔</span><span id="oktxt"></span></div>
+  <a class="btn" id="ver" href="#resumo" style="display:none">Ver resumo do mês</a>
+</section>
+
+<section class="view" id="v-resumo">
+  <a class="btn quiet" href="#menu" style="margin:0 0 16px"><span aria-hidden="true">←</span> Voltar ao menu</a>
+  <h2>Resumo do mês</h2>
+  <label for="mes">Mês</label>
+  <select id="mes"><option value="nov">Novembro/2026</option><option value="vazio">Dezembro/2026</option></select>
+  <div class="grid2" id="cards" style="margin-top:16px"></div>
+  <h2 style="margin-top:22px">Últimas perdas</h2>
+  <ul class="list" id="lista"></ul>
+  <a class="btn" href="#perda"><span aria-hidden="true">⚠</span> Registrar perda</a>
+</section>
+
+<p class="proto">Protótipo do MVP · dados fictícios</p>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function show(){
+  const h=(location.hash||"#login").slice(1);
+  const v=["login","menu","perda","resumo"].includes(h)?h:"login";
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
+  if(v==="perda"){$("erro").classList.remove("on");$("ok").classList.remove("on");$("ver").style.display="none"}
+  if(v==="resumo")resumo();
+  window.scrollTo(0,0);
+}
+function resumo(){
+  const m=$("mes").value;
+  if(m==="vazio"){
+    $("cards").innerHTML='<div class="card wide"><b>Sem dados neste mês</b><span>Registre uma compra e uma perda para ver o resumo.</span></div>';
+    $("lista").innerHTML="";return;
+  }
+  $("cards").innerHTML=
+   '<div class="card"><span>Total comprado</span><b>R$ 100,00</b></div>'+
+   '<div class="card"><span>Total perdido</span><b>R$ 5,00</b></div>'+
+   '<div class="card wide"><span>Taxa de desperdício</span><b>5%</b><span class="delta">▼ 3 pontos menor que outubro (8%)</span></div>'+
+   '<div class="card wide"><span>Motivo mais frequente</span><b style="font-size:1.25rem">Preparo que não deu certo</b></div>';
+  $("lista").innerHTML=
+   '<li><div class="row"><b>Morango · 0,5 kg</b><b>R$ 5,00</b></div><span class="hint">06/11/2026 · Preparo que não deu certo</span></li>'+
+   '<li><div class="row"><b>Leite condensado · 0,25 kg</b><b>R$ 2,00</b></div><span class="hint">03/11/2026 · Validade vencida</span></li>';
+}
+$("mes").addEventListener("change",resumo);
+$("salvar").addEventListener("click",()=>{
+  const q=parseFloat($("qtd").value.replace(",","."));
+  if(!(q>0)){$("erro").classList.add("on");$("ok").classList.remove("on");$("ver").style.display="none";$("qtd").focus();return}
+  $("erro").classList.remove("on");
+  const v=(q*parseFloat($("ing").value)).toFixed(2).replace(".",",");
+  $("oktxt").textContent="Perda registrada: R$ "+v;
+  $("ok").classList.add("on");$("ver").style.display="flex";
+});
+window.addEventListener("hashchange",show);show();
+</script>
+</body>
+</html>

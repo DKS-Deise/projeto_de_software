@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Controle de desperdício{% endblock %} · Delícias da Lu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <style>
+    body{font-size:1.0625rem;background:#f2f3f6;color:#1d2330}
+    main{max-width:430px;margin:0 auto;padding:20px 16px 40px}
+    .btn{min-height:56px;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:700;border-radius:14px;width:100%}
+    .btn-principal{background:#a61e3a;color:#fff;border:2px solid #a61e3a;min-height:72px;font-size:1.25rem}
+    .btn-principal:hover,.btn-principal:focus{background:#8a1730;color:#fff}
+    .btn-contorno{background:#fff;color:#a61e3a;border:2px solid #a61e3a}
+    .btn-neutro{background:#fff;color:#1d2330;border:2px solid #9aa3b2}
+    .form-control,.form-select{min-height:52px;border:2px solid #9aa3b2;border-radius:12px;font-size:1.0625rem}
+    label{font-weight:700;margin:16px 0 6px;display:block}
+    :focus-visible{outline:3px solid #1d2330!important;outline-offset:2px}
+    .errorlist{list-style:none;padding:0;margin:6px 0 0;color:#a4161a;font-weight:700}
+    .errorlist li::before{content:"⚠ "}
+    .aviso{padding:12px 14px;border-radius:12px;font-weight:700;margin-bottom:14px;border:2px solid}
+    .aviso.success{background:#e3f4ea;color:#0d6b3d;border-color:#0d6b3d}
+    .aviso.success::before{content:"✔ "}
+    .aviso.error{background:#fde8e8;color:#a4161a;border-color:#a4161a}
+    .aviso.error::before{content:"⚠ "}
+    .cartao{background:#fff;border:2px solid #9aa3b2;border-radius:14px;padding:14px;margin-bottom:10px}
+    .cartao b{display:block;font-size:1.6rem}
+    .suave{color:#4b5363}
+  </style>
+</head>
+<body>
+<main>
+  <h1 class="h3 mb-1">Controle de desperdício</h1>
+  <p class="suave">Delícias da Lu</p>
+  {% for m in messages %}<div class="aviso {{ m.tags }}" role="status">{{ m }}</div>{% endfor %}
+  {% block conteudo %}{% endblock %}
+</main>
+</body>
+</html>

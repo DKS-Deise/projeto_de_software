@@ -1,0 +1,13 @@
+{% extends "desperdicio/base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block conteudo %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="aviso error" role="alert">Usuário ou senha incorretos.</div>{% endif %}
+  <label for="id_username">Usuário</label>
+  <input type="text" name="username" id="id_username" class="form-control" autocomplete="username" required autofocus>
+  <label for="id_password">Senha</label>
+  <input type="password" name="password" id="id_password" class="form-control" autocomplete="current-password" required>
+  <button type="submit" class="btn btn-principal mt-4">Entrar</button>
+</form>
+{% endblock %}

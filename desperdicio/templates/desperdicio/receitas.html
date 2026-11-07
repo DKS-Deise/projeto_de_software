@@ -1,0 +1,12 @@
+{% extends "desperdicio/base.html" %}
+{% block titulo %}Receitas{% endblock %}
+{% block conteudo %}
+<a class="btn btn-neutro mb-3" href="{% url 'menu' %}"><span aria-hidden="true">←</span> Voltar ao menu</a>
+<h2 class="h4">Receitas</h2>
+{% for r in receitas %}
+  <div class="cartao"><b style="font-size:1.2rem">{{ r.nome }}</b>
+    <span class="suave">Rende {{ r.rendimento }} {{ r.get_unidade_rendimento_display }}</span><br>
+    Custo: <strong>R$ {{ r.custo|floatformat:2 }}</strong></div>
+{% empty %}<p class="suave">Nenhuma receita cadastrada ainda.</p>{% endfor %}
+<a class="btn btn-principal" style="min-height:56px" href="{% url 'receita_nova' %}">Cadastrar receita</a>
+{% endblock %}

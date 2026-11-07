@@ -1,0 +1,17 @@
+{% extends "desperdicio/base.html" %}
+{% block titulo %}Caixa{% endblock %}
+{% block conteudo %}
+<a class="btn btn-neutro mb-3" href="{% url 'menu' %}"><span aria-hidden="true">←</span> Voltar ao menu</a>
+<h2 class="h4">Caixa do mês</h2>
+<div class="cartao"><span class="suave">Entradas</span> R$ {{ caixa.entradas|floatformat:2 }}<br>
+  <span class="suave">Saídas</span> R$ {{ caixa.saidas|floatformat:2 }}<br>
+  <span class="suave">Saldo</span> <b>R$ {{ caixa.saldo|floatformat:2 }}</b></div>
+<h3 class="h5 mt-4">Novo lançamento</h3>
+<form method="post" novalidate>{% csrf_token %}{{ form.non_field_errors }}
+  {% for campo in form %}<label for="{{ campo.id_for_label }}">{{ campo.label }}</label>{{ campo }}{{ campo.errors }}{% endfor %}
+  <button type="submit" class="btn btn-principal mt-4" style="min-height:56px;font-size:1.0625rem">Salvar</button></form>
+<h3 class="h5 mt-4">Últimos lançamentos</h3>
+{% for l in lancamentos %}<div class="cartao"><strong>{{ l.descricao }}</strong> · R$ {{ l.valor|floatformat:2 }}<br>
+  <span class="suave">{{ l.data|date:"d/m/Y" }} · {{ l.get_tipo_display }}</span></div>
+{% empty %}<p class="suave">Nenhum lançamento neste mês.</p>{% endfor %}
+{% endblock %}

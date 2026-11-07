@@ -1,0 +1,28 @@
+{% extends "desperdicio/base.html" %}
+{% block titulo %}Resumo do mês{% endblock %}
+{% block conteudo %}
+<a class="btn btn-neutro mb-3" href="{% url 'menu' %}"><span aria-hidden="true">←</span> Voltar ao menu</a>
+<h2 class="h4">Resumo do mês</h2>
+<form method="get"><label for="mes">Mês</label>
+  <input type="month" id="mes" name="mes" value="{{ mes }}" class="form-control" onchange="this.form.submit()">
+  <noscript><button class="btn btn-neutro mt-2" type="submit">Atualizar</button></noscript></form>
+<div class="mt-3">
+  <div class="cartao"><span class="suave">Total comprado</span><b>R$ {{ r.total_comprado|floatformat:2 }}</b></div>
+  <div class="cartao"><span class="suave">Total perdido</span><b>R$ {{ r.total_perdido|floatformat:2 }}</b></div>
+  <div class="cartao"><span class="suave">Taxa de desperdício</span>
+    {% if r.taxa is None %}<b>Sem dados neste mês</b><span class="suave">Registre uma compra para calcular a taxa.</span>
+    {% else %}<b>{{ r.taxa|floatformat:1 }}%</b>
+      {% if r.variacao is not None %}<strong>
+        {% if r.variacao < 0 %}▼ {{ r.variacao|floatformat:1 }} ponto(s) percentual(is): menor que o mês anterior ({{ r.taxa_anterior|floatformat:1 }}%)
+        {% elif r.variacao > 0 %}▲ +{{ r.variacao|floatformat:1 }} ponto(s) percentual(is): maior que o mês anterior ({{ r.taxa_anterior|floatformat:1 }}%)
+        {% else %}= igual ao mês anterior ({{ r.taxa_anterior|floatformat:1 }}%){% endif %}</strong>{% endif %}
+    {% endif %}</div>
+  <div class="cartao"><span class="suave">Motivo mais frequente</span><b style="font-size:1.25rem">{{ r.motivo_frequente|default:"Sem perdas no mês" }}</b></div>
+</div>
+<h3 class="h5 mt-4">Últimas perdas</h3>
+{% for p in r.ultimas %}
+  <div class="cartao"><div class="d-flex justify-content-between"><strong>{{ p.ingrediente.nome }} · {{ p.quantidade }} {{ p.ingrediente.unidade }}</strong><strong>R$ {{ p.valor_perdido|floatformat:2 }}</strong></div>
+    <span class="suave">{{ p.data|date:"d/m/Y" }} · {{ p.get_motivo_display }}{% if p.observacao %} · {{ p.observacao }}{% endif %}</span></div>
+{% empty %}<p class="suave">Nenhuma perda registrada neste mês.</p>{% endfor %}
+<a class="btn btn-contorno mt-2" href="{% url 'perda_nova' %}"><span aria-hidden="true">⚠</span> Registrar perda</a>
+{% endblock %}
