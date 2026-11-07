@@ -44,7 +44,7 @@ Abra `http://127.0.0.1:8000/`. Cadastre ingredientes em "Registrar compra" → "
 Para produção, defina as variáveis de `.env.example` no serviço de hospedagem (chave secreta, hosts, banco e HTTPS) e rode `python manage.py migrate`.
 
 ## Publicação no Render e monitoramento
-O arquivo `render.yaml` descreve o serviço web e o PostgreSQL, coleta os arquivos estáticos, aplica as migrações ao iniciar e configura a checagem `/healthz/`. Para publicar:
+O arquivo `render.yaml` descreve o serviço web e o PostgreSQL, coleta os arquivos estáticos, aplica as migrações ao iniciar, inicia o Gunicorn na porta dinâmica `$PORT` do Render e configura a checagem `/healthz/`. Para publicar:
 1. Envie esta branch ao GitHub e, no Render, escolha **New → Blueprint**, conecte `DKS-Deise/projeto_de_software` e selecione a branch enviada.
 2. Revise o Blueprint e confirme a criação. O plano gratuito é para demonstração; confira os limites e a retenção do banco exibidos pelo Render antes de armazenar dados importantes.
 3. Após o deploy, crie uma conta de acesso em **Shell** do serviço com `python manage.py createsuperuser`. Use apenas dados fictícios na demonstração e guarde as credenciais fora do repositório.
