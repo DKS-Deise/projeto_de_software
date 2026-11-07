@@ -46,6 +46,8 @@ DJANGO_DEBUG=1 python manage.py test
 ```
 Os 16 testes cobrem os cálculos (RF01–RF05) e os controles de segurança: telas exigem login, senha com hash PBKDF2, CSRF obrigatório, validação no servidor, motivo restrito à lista e script digitado exibido como texto.
 
+O GitHub Actions executa essa suíte automaticamente em cada pull request para `main` e em cada push para `main`. O resultado aparece na aba **Actions** e nos checks do pull request.
+
 ## Segurança (RNF01/RNF02)
 Login obrigatório em todas as telas, senhas com PBKDF2 (nativo do Django, mínimo de 8 caracteres), sessão de 8 h com cookies `HttpOnly`/`Secure`, token CSRF, consultas pelo ORM, saída escapada nos templates, `DEBUG` desligado por padrão, segredos em variáveis de ambiente e mensagem genérica no erro de login.
 
