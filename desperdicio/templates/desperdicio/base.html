@@ -26,14 +26,54 @@
     .cartao{background:#fff;border:2px solid #9aa3b2;border-radius:14px;padding:14px;margin-bottom:10px}
     .cartao b{display:block;font-size:1.6rem}
     .suave{color:#4b5363}
+    .controle-fonte{display:flex;gap:8px}
+    .controle-fonte button{min-width:52px;min-height:44px;padding:8px 12px;border:2px solid #596273;border-radius:10px;background:#fff;color:#1d2330;font-weight:700}
+    .controle-fonte button:last-child{min-width:auto}
   </style>
 </head>
 <body>
 <main>
   <h1 class="h3 mb-1">Controle de desperdício</h1>
   <p class="suave">Delícias da Lu</p>
+  <section class="mb-3" aria-labelledby="rotulo-fonte">
+    <p id="rotulo-fonte" class="mb-1 fw-bold">Tamanho do texto</p>
+    <div class="controle-fonte" role="group" aria-labelledby="rotulo-fonte">
+      <button type="button" data-ajuste-fonte="-1" aria-label="Diminuir tamanho do texto">A−</button>
+      <button type="button" data-ajuste-fonte="1" aria-label="Aumentar tamanho do texto">A+</button>
+      <button type="button" data-ajuste-fonte="0">Padrão</button>
+    </div>
+    <p id="estado-fonte-visivel" class="small mt-1 mb-0" aria-hidden="true"></p>
+    <span id="estado-fonte" class="visually-hidden" role="status" aria-live="polite"></span>
+  </section>
   {% for m in messages %}<div class="aviso {{ m.tags }}" role="status">{{ m }}</div>{% endfor %}
   {% block conteudo %}{% endblock %}
 </main>
+<script>
+  (() => {
+    const tamanhos = [100, 115, 130];
+    const chave = "delicias-da-lu-tamanho-fonte";
+    const salvo = Number(localStorage.getItem(chave));
+    let tamanho = tamanhos.includes(salvo) ? salvo : 100;
+    const estado = document.getElementById("estado-fonte");
+
+    function aplicarTamanho() {
+      document.documentElement.style.fontSize = `${tamanho}%`;
+      estado.textContent = `Tamanho do texto: ${tamanho}%.`;
+      document.getElementById("estado-fonte-visivel").textContent = `Tamanho atual: ${tamanho}%`;
+      localStorage.setItem(chave, String(tamanho));
+    }
+
+    document.querySelectorAll("[data-ajuste-fonte]").forEach((botao) => {
+      botao.addEventListener("click", () => {
+        const ajuste = Number(botao.dataset.ajusteFonte);
+        const indice = tamanhos.indexOf(tamanho);
+        tamanho = ajuste === 0 ? 100 : tamanhos[Math.max(0, Math.min(tamanhos.length - 1, indice + ajuste))];
+        aplicarTamanho();
+      });
+    });
+
+    aplicarTamanho();
+  })();
+</script>
 </body>
 </html>
